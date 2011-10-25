@@ -20,76 +20,76 @@ command JSHintReloadConfiguration call <SID>JSHintLoadConfiguration()
 autocmd BufWritePost,FileWritePost *.js call s:JSHint()
 autocmd BufWinLeave * call s:MaybeClearCursorLineColor()
 
-if !exists('jshint_plugin_path')
-    let runtimepaths = &runtimepath . ','
-    while strlen(runtimepaths) != 0
-        let filepath = substitute(runtimepaths, ',.*', '', '') . '/plugin/jshint'
-        if filereadable(filepath . '/parser.js')
-            let jshint_plugin_path = filepath
+if !exists('s:jshint_plugin_path')
+    let s:runtimepaths = &runtimepath . ','
+    while strlen(s:runtimepaths) != 0
+        let s:filepath = substitute(s:runtimepaths, ',.*', '', '') . '/plugin/jshint'
+        if filereadable(s:filepath . '/parser.js')
+            let s:jshint_plugin_path = s:filepath
             break
         endif
-        let runtimepaths = substitute(runtimepaths, '[^,]*,', '', '')
+        let s:runtimepaths = substitute(s:runtimepaths, '[^,]*,', '', '')
     endwhile
 endif
 
-if !exists("jshint_parser")
-    let jshint_parser = jshint_plugin_path . '/parser.js'
+if !exists("s:jshint_parser")
+    let s:jshint_parser = s:jshint_plugin_path . '/parser.js'
 endif
 
-if !exists("jshint")
-    let jshint = jshint_plugin_path . '/jshint.js'
+if !exists("s:jshint")
+    let s:jshint = s:jshint_plugin_path . '/jshint.js'
 endif
 
-if !exists("jshint_command")
-    let jsc = '/System/Library/Frameworks/JavaScriptCore.framework/Resources/jsc'
-    if executable(jsc)
-        let js_interpreter = jsc
-        let sep = ' -- '
+if !exists("s:jshint_command")
+    let s:jsc = '/System/Library/Frameworks/JavaScriptCore.framework/Resources/jsc'
+    if executable(s:jsc)
+        let s:js_interpreter = s:jsc
+        let s:sep = ' -- '
     elseif executable('js')
-        let js_interpreter = 'js'
-        let sep = ' '
+        let s:js_interpreter = 'js'
+        let s:sep = ' '
     endif
-    let jshint_command = js_interpreter . ' ' . jshint_parser . sep . jshint
+    let s:jshint_command = s:js_interpreter . ' ' . s:jshint_parser . s:sep . s:jshint
 endif
 
-if !exists("jshint_highlight_color")
-    let jshint_highlight_color = 'DarkMagenta'
+if !exists("s:jshint_highlight_color")
+    let s:jshint_highlight_color = 'DarkMagenta'
 endif
 
-function! jshint#readConfiguration(path)
-    let jshintrc_file = expand(a:path . '/.jshintrc')
-    if filereadable(jshintrc_file)
-        return readfile(jshintrc_file)
+function! s:ReadConfiguration(path)
+    let l:jshintrc_file = expand(a:path . '/.jshintrc')
+    if filereadable(l:jshintrc_file)
+        return readfile(l:jshintrc_file)
     end
     return []
 endfunction
 
 function! s:JSHintLoadConfiguration()
-    let global_jshintrc = jshint#readConfiguration($HOME)
-    let local_jshintrc = jshint#readConfiguration(getcwd())
-    let g:jshintrc = [join(global_jshintrc + local_jshintrc)]
+    let l:global_jshintrc = s:ReadConfiguration($HOME)
+    let l:local_jshintrc = s:ReadConfiguration(getcwd())
+    let s:jshintrc = [join(l:global_jshintrc + l:local_jshintrc)]
 endfunction
 
-if !exists("g:jshintrc")
+if !exists("s:jshintrc")
     call s:JSHintLoadConfiguration()
 endif
 
 " Runs the current file through javascript hint and
 " opens a quickfix window with any warnings
 function! s:JSHint()
-    let current_file = shellescape(expand('%:p'))
-    let cmd_output = system(g:jshint_command . ' ' . current_file, join(g:jshintrc + getline(1, line("$")), "\n") . "\n")
+    let l:current_file = shellescape(expand('%:p'))
+    let l:cmd_output = system(s:jshint_command . ' ' . l:current_file, join(s:jshintrc + getline(1, line("$")), "\n") . "\n")
     let &errorformat='%f(%l): %m'
     " if some warnings were found, we process them
-    if strlen(cmd_output) > 0
+    if strlen(l:cmd_output) > 0
 
         " write quickfix errors to a temp file
-        let quickfix_tmpfile_name = tempname()
-        exe "redir! > " . quickfix_tmpfile_name
-        silent echon cmd_output
+        let l:quickfix_tmpfile_name = tempname()
+        exe "redir! > " . l:quickfix_tmpfile_name
+        silent echon l:cmd_output
         redir END
         " read in the errors temp file
-        execute "silent! cfile " . quickfix_tmpfile_name
+        execute "silent! cfile " . l:quickfix_tmpfile_name
 
         " change the cursor line to something hard to miss
         call s:SetCursorLineColor()
@@ -99,7 +99,7 @@ function! s:JSHint()
         let s:qfix_win = bufnr("$")
 
         " delete the temp file
-        call delete(quickfix_tmpfile_name)
+        call delete(l:quickfix_tmpfile_name)
 
         " if no javascript warnings are found, we revert the cursorline color
         " and close the quick fix window
@@ -128,7 +128,7 @@ function s:SetCursorLineColor()
         unlet s:previous_cursor_guibg
     endif
 
-    execute "highlight CursorLine guibg=" . g:jshint_highlight_color
+    execute "highlight CursorLine guibg=" . s:jshint_highlight_color
 endfunction
 
 " Conditionally reverts the cursor line color based on the presence
