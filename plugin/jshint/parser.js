@@ -25,6 +25,6 @@ if (!JSHINT(body)) {
     var file = arguments[1], len = JSHINT.errors.length, error;
     for (var i = 0; i < len; i++) {
         error = JSHINT.errors[i];
-        print(file + '(' + error.line + '): ' + error.id.replace(/\(|\)/g, '') + ': ' + error.reason.toLowerCase());
+        print(file + '(' + (error.line - 1) + '): ' + error.id.replace(/\(|\)/g, '') + ': ' + error.reason.toLowerCase());
     }
 }
