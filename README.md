@@ -32,9 +32,17 @@ Install SpiderMonkey
 
 $HOME/.jshintrc and $CWD/.jshintrc are loaded automatically.
 
-Running :JSHintReloadConfiguration will reload all jshintrc files.
+Example:
 
-    JSHintReloadConfiguration
+    /*jshint expr: true, boss: true */
+
+### Commands
+
+- `:JSHint` manually call jshint
+
+- `:JSHintReloadConfiguration` reloads all .jshintrc files.
+
+- `:JSHintToggle` enables or disables jshint automatic validation
 
 ### Credits
 

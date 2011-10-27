@@ -10,13 +10,15 @@
 " Last Modified: October 24, 2011
 " Credits: heavily borrowed from Joe Stelmach's javascriptLint.vim
 
-if exists("g:loaded_jshint")
+if exists("g:jshint_loaded")
     finish
 endif
-let g:loaded_jshint = 1
+let g:jshint_loaded = 1
+let g:jshint_enabled = 1
 
 command JSHint call <SID>JSHint()
 command JSHintReloadConfiguration call <SID>JSHintLoadConfiguration()
+command JSHintToggle call <SID>JSHintToggle()
 autocmd BufWritePost,FileWritePost *.js call s:JSHint()
 autocmd BufWinLeave * call s:MaybeClearCursorLineColor()
 
@@ -70,6 +72,10 @@ function! s:JSHintLoadConfiguration()
     let s:jshintrc = [join(l:global_jshintrc + l:local_jshintrc)]
 endfunction
 
+function! s:JSHintToggle()
+   let g:jshint_enabled = !g:jshint_enabled
+endfunction
+
 if !exists("s:jshintrc")
     call s:JSHintLoadConfiguration()
 endif
@@ -77,6 +83,10 @@ endif
 " Runs the current file through javascript hint and
 " opens a quickfix window with any warnings
 function! s:JSHint()
+    if g:jshint_enabled != 1
+        return
+    endif
+
     let l:current_file = shellescape(expand('%:p'))
     let l:cmd_output = system(s:jshint_command . ' ' . l:current_file, join(s:jshintrc + getline(1, line("$")), "\n") . "\n")
     let &errorformat='%f(%l): %m'
