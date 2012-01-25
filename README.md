@@ -20,7 +20,8 @@ then simply copy and paste:
 
 #### Mac OS X
 
-No additional installation steps required /System/Library/Frameworks/JavaScriptCore.framework/Resources/jsc is used by default.
+No additional installation steps required /System/Library/Frameworks/JavaScriptCore.framework/Resources/jsc 
+is used by default.
 
 #### Linux
 
@@ -28,13 +29,19 @@ Install SpiderMonkey
 
     $ sudo apt-get install spidermonkey-bin
 
-### Configuration
+### Options
 
-$HOME/.jshintrc and $CWD/.jshintrc are loaded automatically.
+`.jshintrc` files in your home directory as well as in your current directory will be loaded automatically.
+
+Your options file(s) should be in JSON format.
+See [JSHint docs](http://www.jshint.com/options/) for more information about option names and values.
 
 Example:
 
-    /*jshint expr: true, boss: true */
+    {
+        "expr": true, 
+        "boss": true
+    }
 
 ### Commands
 
