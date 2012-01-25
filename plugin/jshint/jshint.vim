@@ -17,7 +17,7 @@ let g:jshint_loaded = 1
 let g:jshint_enabled = 1
 
 command JSHint call <SID>JSHint()
-command JSHintReloadConfiguration call <SID>JSHintLoadConfiguration()
+command JSHintReload call <SID>JSHintLoad()
 command JSHintToggle call <SID>JSHintToggle()
 autocmd BufWritePost,FileWritePost *.js call s:JSHint()
 autocmd BufWinLeave * call s:MaybeClearCursorLineColor()
@@ -58,7 +58,7 @@ if !exists("s:jshint_highlight_color")
     let s:jshint_highlight_color = 'DarkMagenta'
 endif
 
-function! s:ReadConfiguration(path)
+function! s:ReadOptions(path)
     let l:jshintrc_file = expand(a:path . '/.jshintrc')
     if filereadable(l:jshintrc_file)
         return system('cat ' . l:jshintrc_file . ' | sed -e "s|//.*||g"')
@@ -66,9 +66,9 @@ function! s:ReadConfiguration(path)
     return ''
 endfunction
 
-function! s:JSHintLoadConfiguration()
-    let s:global_jshintrc = s:ReadConfiguration($HOME)
-    let s:local_jshintrc = s:ReadConfiguration(getcwd())
+function! s:JSHintLoad()
+    let s:global_jshintrc = s:ReadOptions($HOME)
+    let s:local_jshintrc = s:ReadOptions(getcwd())
 endfunction
 
 function! s:JSHintToggle()
@@ -76,7 +76,7 @@ function! s:JSHintToggle()
 endfunction
 
 if !exists("s:jshintrc")
-    call s:JSHintLoadConfiguration()
+    call s:JSHintLoad()
 endif
 
 " Runs the current file through javascript hint and

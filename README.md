@@ -48,9 +48,9 @@ Example:
 
 ### Commands
 
-- `:JSHint` manually call jshint
+- `:JSHint` manually call joshing
 
-- `:JSHintReloadConfiguration` reloads all .jshintrc files.
+- `:JSHintReload` reloads all .jshintrc files.
 
 - `:JSHintToggle` enables or disables jshint automatic validation
 
