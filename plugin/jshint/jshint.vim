@@ -61,7 +61,7 @@ endif
 function! s:ReadOptions(path)
     let l:jshintrc_file = expand(a:path . '/.jshintrc')
     if filereadable(l:jshintrc_file)
-        return system('cat ' . l:jshintrc_file . ' | sed -e "s|//.*||g"')
+        return system('cat ' . l:jshintrc_file . ' | sed -e "s|//.*||g" | sed -e "s|\"|\\\\\"|g"')
     end
     return ''
 endfunction
