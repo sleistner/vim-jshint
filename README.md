@@ -10,7 +10,6 @@ A vim plugin that automatically run [jshint](http://jshint.org/) on your current
 The contents of a javascript file will be passed through the javascript hint parser after the buffer is saved.
 Any lint warnings will be placed in the quickfix error window.
 
-
 ## Installation
 
 ### Plugin
