@@ -1,12 +1,15 @@
-# jshint.vim
+# vim-jshint
 
-A vim plugin that allow you to run [jshint](http://jshint.org/) from vim.
-
-The contents of a javascript file will be passed through the javascript hint parser after the file's buffer is saved.
-Any lint warnings will be placed in the quickfix error window.
+A vim plugin that automatically run [jshint](http://jshint.org/) on your current buffer.
 
 <img src="http://sleistner.github.com/vim-jshint/images/screenshot.png"
   alt="vim-jshint screenshot" width="829" height="581" />
+
+## Usage
+
+The contents of a javascript file will be passed through the javascript hint parser after the buffer is saved.
+Any lint warnings will be placed in the quickfix error window.
+
 
 ## Installation
 
@@ -48,11 +51,11 @@ Example:
 
 ### Commands
 
-- `:JSHint` manually call joshing
+- `:JSHint` run jshint for current file
 
-- `:JSHintReload` reloads all .jshintrc files.
+- `:JSHintReload` reload all `.jshintrc` option files.
 
-- `:JSHintToggle` enables or disables jshint automatic validation
+- `:JSHintToggle` enable or disable jshint validation
 
 ### Credits
 
