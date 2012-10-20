@@ -1,6 +1,6 @@
 # vim-jshint
 
-A vim plugin that automatically run [jshint](http://jshint.org/) on your current buffer.
+A vim plugin that automatically run [jshint](http://jshint.org/) on the current buffer.
 
 <img src="http://sleistner.github.com/vim-jshint/images/screenshot.png"
   alt="vim-jshint screenshot" width="829" height="581" />
