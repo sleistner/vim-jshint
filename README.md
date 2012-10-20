@@ -7,8 +7,8 @@ A vim plugin that automatically run [jshint](http://jshint.org/) on the current 
 
 ## Usage
 
-The contents of a javascript file will be passed through the javascript hint parser after the buffer is saved.
-Any lint warnings will be placed in the quickfix error window.
+The content of the current buffer will be passed to the javascript jshint parser after the buffer is saved.
+Lint warnings will be shown in the quickfix error window.
 
 ## Installation
 
@@ -36,9 +36,9 @@ Install SpiderMonkey
 
 ### Options
 
-`.jshintrc` files in your home directory as well as in your current directory will be loaded automatically.
+`.jshintrc` option files in your home and current directory will be loaded automatically.
 
-Your options file(s) should be in JSON format.
+Option files should be in JSON format.
 See [JSHint docs](http://www.jshint.com/options/) for more information about option names and values.
 
 Example:
