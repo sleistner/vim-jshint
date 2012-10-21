@@ -1,9 +1,14 @@
-# jshint.vim
+# vim-jshint
 
-A plugin that allow you to run [jshint](http://jshint.org/) from vim.
+A vim plugin that automatically run [jshint](http://jshint.org/) on the current buffer.
 
-The contents of a javascript file will be passed through the javascript hint parser after the file's buffer is saved.
-Any lint warnings will be placed in the quickfix error window.
+<img src="http://sleistner.github.com/vim-jshint/images/screenshot.png"
+  alt="vim-jshint screenshot" width="829" height="581" />
+
+## Usage
+
+The content of the current buffer will be passed to the javascript jshint parser after the buffer is saved.
+Lint warnings will be shown in the quickfix error window.
 
 ## Installation
 
@@ -20,7 +25,8 @@ then simply copy and paste:
 
 #### Mac OS X
 
-No additional installation steps required /System/Library/Frameworks/JavaScriptCore.framework/Resources/jsc is used by default.
+No additional installation steps required /System/Library/Frameworks/JavaScriptCore.framework/Resources/jsc
+is used by default.
 
 #### Linux
 
@@ -28,21 +34,27 @@ Install SpiderMonkey
 
     $ sudo apt-get install spidermonkey-bin
 
-### Configuration
+### Options
 
-$HOME/.jshintrc and $CWD/.jshintrc are loaded automatically.
+`.jshintrc` option files in your home and current directory will be loaded automatically.
+
+Those files should be in JSON format.
+See [JSHint docs](http://www.jshint.com/options/) for more information about option names and values.
 
 Example:
 
-    /*jshint expr: true, boss: true */
+    {
+        "expr": true,
+        "boss": true
+    }
 
 ### Commands
 
-- `:JSHint` manually call jshint
+- `:JSHint` run jshint for current file
 
-- `:JSHintReloadConfiguration` reloads all .jshintrc files.
+- `:JSHintReload` reload all `.jshintrc` option files.
 
-- `:JSHintToggle` enables or disables jshint automatic validation
+- `:JSHintToggle` enable or disable jshint validation
 
 ### Credits
 
