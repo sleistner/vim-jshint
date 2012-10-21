@@ -1,9 +1,8 @@
-
 function parseOptions(optionsString) {
     var options;
     if (optionsString) {
         try {
-            options = eval('(' + optionsString + ')');
+            options = JSON.parse(optionsString);
         } catch (e) {
             options = {};
         }
