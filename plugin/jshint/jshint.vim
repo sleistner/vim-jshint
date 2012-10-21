@@ -86,8 +86,13 @@ function! s:JSHint()
         return
     endif
 
+    let l:content = join(getline(1, line("$")), "\n")
+    if strlen(l:content) < 1
+        return
+    endif
+
     let l:current_file = shellescape(expand('%:p'))
-    let l:cmd_output = system(s:jshint_command . ' ' . l:current_file . ' "' . s:global_jshintrc . '" "' . s:local_jshintrc . '"', join(getline(1, line("$")), "\n"))
+    let l:cmd_output = system(s:jshint_command . ' ' . l:current_file . ' "' . s:global_jshintrc . '" "' . s:local_jshintrc . '"', l:content)
     let &errorformat='%f(%l): %m'
     " if some warnings were found, we process them
     if strlen(l:cmd_output) > 0
