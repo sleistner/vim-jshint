@@ -1,4 +1,25 @@
-load(arguments[0]);
+
+function parseOptions(optionsString) {
+    var options;
+    if (optionsString) {
+        try {
+            options = eval('(' + optionsString + ')');
+        } catch (e) {
+            options = {};
+        }
+    }
+    return options || {};
+}
+
+function getOptions(args) {
+    var globalOptions   = parseOptions(args[1]);
+    var localOptions    = parseOptions(args[2]);
+    
+    for (var option in localOptions) {
+        globalOptions[option] = localOptions[option];
+    }
+    return globalOptions;
+}
 
 function readSTDIN() {
     var line = readline(),
@@ -20,19 +41,13 @@ function readSTDIN() {
     return input.join("\n");
 }
 
-var body = readSTDIN() || arguments[2];
-if (!JSHINT(body)) {
-    var file  = arguments[1],
-        len   = JSHINT.errors.length,
-        error;
+var body    = readSTDIN();
+var options = getOptions(arguments);
+
+if (!JSHINT(body, options)) {
+    var file = arguments[0], len = JSHINT.errors.length, error;
     for (var i = 0; i < len; i++) {
         error = JSHINT.errors[i];
-        print(
-            file +
-            '(' + (error.line - 1) + '): ' +
-            error.id.replace(/\(|\)/g, '') +
-            ': ' +
-            error.reason.toLowerCase()
-        );
+        print(file + '(' + error.line + '): ' + error.id.replace(/\(|\)/g, '') + ': ' + error.reason.toLowerCase());
     }
 }

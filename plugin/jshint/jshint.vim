@@ -17,7 +17,7 @@ let g:jshint_loaded = 1
 let g:jshint_enabled = 1
 
 command JSHint call <SID>JSHint()
-command JSHintReloadConfiguration call <SID>JSHintLoadConfiguration()
+command JSHintReload call <SID>JSHintLoad()
 command JSHintToggle call <SID>JSHintToggle()
 autocmd BufWritePost,FileWritePost *.js call s:JSHint()
 autocmd BufWinLeave * call s:MaybeClearCursorLineColor()
@@ -51,25 +51,24 @@ if !exists("s:jshint_command")
         let s:js_interpreter = 'js'
         let s:sep = ' '
     endif
-    let s:jshint_command = s:js_interpreter . ' ' . s:jshint_parser . s:sep . s:jshint
+    let s:jshint_command = s:js_interpreter . ' "' .  s:jshint . '" "' . s:jshint_parser . '"' . s:sep
 endif
 
 if !exists("s:jshint_highlight_color")
     let s:jshint_highlight_color = 'DarkMagenta'
 endif
 
-function! s:ReadConfiguration(path)
+function! s:ReadOptions(path)
     let l:jshintrc_file = expand(a:path . '/.jshintrc')
     if filereadable(l:jshintrc_file)
-        return readfile(l:jshintrc_file)
+        return system('cat ' . l:jshintrc_file . ' | sed -e "s|//.*||g" | sed -e "s|\"|\\\\\"|g"')
     end
-    return []
+    return ''
 endfunction
 
-function! s:JSHintLoadConfiguration()
-    let l:global_jshintrc = s:ReadConfiguration($HOME)
-    let l:local_jshintrc = s:ReadConfiguration(getcwd())
-    let s:jshintrc = [join(l:global_jshintrc + l:local_jshintrc)]
+function! s:JSHintLoad()
+    let s:global_jshintrc = s:ReadOptions($HOME)
+    let s:local_jshintrc = s:ReadOptions(getcwd())
 endfunction
 
 function! s:JSHintToggle()
@@ -77,7 +76,7 @@ function! s:JSHintToggle()
 endfunction
 
 if !exists("s:jshintrc")
-    call s:JSHintLoadConfiguration()
+    call s:JSHintLoad()
 endif
 
 " Runs the current file through javascript hint and
@@ -88,7 +87,7 @@ function! s:JSHint()
     endif
 
     let l:current_file = shellescape(expand('%:p'))
-    let l:cmd_output = system(s:jshint_command . ' ' . l:current_file, join(s:jshintrc + getline(1, line("$")), "\n") . "\n")
+    let l:cmd_output = system(s:jshint_command . ' ' . l:current_file . ' "' . s:global_jshintrc . '" "' . s:local_jshintrc . '"', join(getline(1, line("$")), "\n"))
     let &errorformat='%f(%l): %m'
     " if some warnings were found, we process them
     if strlen(l:cmd_output) > 0
