@@ -137,6 +137,11 @@ if (!JSHINT(body, options)) {
         error;
     for (var i = 0; i < len; i++) {
         error = JSHINT.errors[i];
-        print(file + '(' + error.line + '): ' + error.id.replace(/\(|\)/g, '') + ': ' + error.reason.toLowerCase());
+        print(
+            file + '(' + error.line + '): ' + 
+            (error.id || '').replace(/\(|\)/g, '') + 
+            ': ' + 
+            error.reason.toLowerCase()
+        );
     }
 }
