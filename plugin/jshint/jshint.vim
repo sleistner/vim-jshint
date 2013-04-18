@@ -54,8 +54,8 @@ if !exists("s:jshint_command")
     let s:jshint_command = s:js_interpreter . ' "' .  s:jshint . '" "' . s:jshint_parser . '"' . s:sep
 endif
 
-if !exists("s:jshint_highlight_color")
-    let s:jshint_highlight_color = 'DarkMagenta'
+if !exists("g:jshint_highlight_color")
+    let g:jshint_highlight_color = 'DarkMagenta'
 endif
 
 function! s:ReadOptions(path)
@@ -142,7 +142,7 @@ function s:SetCursorLineColor()
         unlet s:previous_cursor_guibg
     endif
 
-    execute "highlight CursorLine guibg=" . s:jshint_highlight_color
+    execute "highlight CursorLine guibg=" . g:jshint_highlight_color
 endfunction
 
 " Conditionally reverts the cursor line color based on the presence
